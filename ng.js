@@ -35,11 +35,11 @@ angular.module('OptimizationsVisualized', ['ui.router'])
   $stateProvider
   .state('part0', {
     url: '/0',
-    templateUrl: '/templates/home.html'
+    templateUrl: 'templates/home.html'
   })
   .state('part6', {
     url: '/6',
-    templateUrl: '/templates/end.html'
+    templateUrl: 'templates/end.html'
   });
   for (var i = 1; i <= 5; i++) {
     $stateProvider
@@ -47,7 +47,7 @@ angular.module('OptimizationsVisualized', ['ui.router'])
       url: '/' + i,
       controller: 'Part' + i + 'Controller',
       controllerAs: 'P' + i,
-      templateUrl: '/templates/part' + i + '.html',
+      templateUrl: 'templates/part' + i + '.html',
       num: i
     });
   }
@@ -213,7 +213,7 @@ angular.module('OptimizationsVisualized', ['ui.router'])
 })
 .directive('optsNav', function ($state) {
   return {
-    templateUrl: '/templates/nav.html',
+    templateUrl: 'templates/nav.html',
     scope: true,
     link: function ($scope) {
       $scope.back = function () {
