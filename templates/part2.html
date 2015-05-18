@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Let Angular run the digest cycle</h2>
+    <opts-nav></opts-nav>
+    <h3 class="text-center"><a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$apply">(docs)</a></h3>
+    <p>It seems that every Angular developer ends up writing their own $apply trigger before they really grok the digest cycle.  Most things in the Angular ecosystem trigger the digest cycle, from ng-click through $interval and $http.  So long as you stay inside the ecosystem, the digest cycle will be run.</p>
+
+    <pre>// Antipattern
+$rootScope.runDigest = function () {
+  if(!$rootScope.$$phase) {
+    $rootScope.$apply();
+  }
+};</pre>
+
+    <p>For instance, I've seen an Angular app that used jQuery's AJAX library to do all of its requests.  Afterwards, they had to manually trigger the digest cycle to get anything to update.  After switching to $http, they never removed the calls to $digest, leading to the digest cycle being run twice for every request.</p>
+
+    <p>If you absolutely must trigger (for instance, when using an external library), use either <code>$timeout</code> or <code>$scope.$evalAsync</code>.  $timeout will trigger a digest cycle after the current one, while $evalAsync will attempt to run with the current digest cycle.</p>
+    <div class="text-center">
+      <small>As an aside, you can keep your $http calls from triggering a pile of digests with <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$applyAsync">$httpProvider.applyAsync(true);</a></small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="text-center">
+      <h3>Unnecessary digests: {{ P2.getBadCycles() }}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+      <div class="text-center">
+        <button ng-click="P2.gimmeRandom()">Gimme a random number!</button><br>
+        {{ P2.random }}<br>
+      </div>
+      <pre>P2.gimmeRandom = function () {
+  $timeout(function () {
+    P2.random = Math.random();
+  });
+};</pre>
+    </div>
+  </div>
+</div>

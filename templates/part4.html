@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Know when to ng-show 'em and when to ng-if 'em</h2>
+    <opts-nav></opts-nav>
+    <h3 class="text-center">(docs: <a href="https://docs.angularjs.org/api/ng/directive/ngShow">ng-show</a> / <a href="https://docs.angularjs.org/api/ng/directive/ngIf">ng-if</a>)</h3>
+    <p>I see a lot of confusion about <code>ng-hide/show</code> vs <code>ng-if</code>.  On the surface, they do the same thing (make an element go away and come back on command).  Digging in, there's a very key difference.  ng-hide/show only apply a CSS class that sets <code>display: none</code>.  The element (and all of its watchers) is kept around.  On the other side, <code>ng-if</code> completely removes the element from the DOM.
+
+    The big question when deciding which directive to use is "Will I be updating the DOM more than I'll be needed the space in my watcher budget?"  If you'll be flipping the switch a lot, choose ng-show.  If the element contains quite a few watchers, it may be more prudent to go with ng-if.
+
+    <div class="text-center">
+      <small>(A word of warning - when ng-if removes an element, all of your custom listeners go with it, so you'll need to reattach them later.)</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="text-center">
+        <h3>ng-show</h3>
+        <div>{{ P4.showWatchers }}</div>
+        <button ng-click="P4.show = !P4.show">Toggle</button>
+      </div>
+      <!-- Using ng-include to create a new scope -->
+      <div class="ao-show" ng-include="'templates/aoShow.html'">
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="text-center">
+        <h3>ng-if</h3>
+        <div>{{ P4.ifWatchers }}</div>
+        <button ng-click="P4.if = !P4.if">Toggle</button>
+      </div>
+      <div class="ao-if" ng-include="'templates/aoIf.html'">
+      </div>
+    </div>
+  </div>
+</div>

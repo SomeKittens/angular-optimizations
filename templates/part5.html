@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Use ng-events with caution</h2>
+    <opts-nav></opts-nav>
+    <!-- Sorry, no docs here.  Didn't really have a good place to point -->
+    <p>Earlier, we looked at how the ng-[event] directives trigger the digest cycle for us.  This is the core of how Angular works but it can bite us later if we're not too careful.  Things like ng-mousemove will run the digest cycle for Every Single MouseMove on the given element.  Running the digest cycle 300 times will slow down even the speediest app.</p>
+
+    <p>Use caution with any of the following directives:</p>
+    <pre>ng-
+   mouse[enter/leave/move/down/up/over]
+   key[down/up/press]</pre>
+
+    <p>Instead, use CSS3's pseudo-selectors to stylize.  If you absolutely must add an event, this is one of the rare cases where you'd want to attach a listener directly via a custom directive, bypassing the digest cycle entirely.</p>
+  </div>
+  <div class="row">
+    <div class="col-xs-8 mousemove" ng-mousemove>
+      <p class="text-center lead">
+        hover me!
+      </p>
+    </div>
+    <div class="col-xs-4">
+      <h4>{{ P5.cyclesRun }}</h4>
+      <p>Given a best-case digest cycle time of 16ms, that's {{ P5.cyclesRun * 16 / 1000 }} seconds spent digesting!</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<DOCTYPE html>
+<html ng-app="OptimizationsVisualized" lang="en">
+<head>
+  <title>Angular Optimizations, Visualized</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <style type="text/css">
+  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+  .mousemove {
+    background-color: grey;
+    height: 300px;
+  }
+  .me {
+    width: 100%;
+    height: 700px;
+    /* Rounded corners are cool, right? */
+    border-radius: 10px;
+  }
+  </style>
+
+</head>
+<body>
+  <h1 class="text-center"><u>Angular Optimizations</u></h1>
+  <ui-view></ui-view>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"></script>
+  <script src="https://rawgit.com/Marak/faker.js/master/examples/browser/js/faker.min.js"></script>
+  <script src="ng.js"></script>
+</body>
+</html>

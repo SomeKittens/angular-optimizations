@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Use track by whenever possible</h2>
+    <opts-nav></opts-nav>
+    <h3 class="text-center"><a href="https://docs.angularjs.org/api/ng/directive/ngRepeat#tracking-and-duplicates">(docs)</a></h3>
+    <p><code>ng-repeat</code> tracks an item's uniqueness against all the other items in the collection it's iterating over.  You've seen the <code>Duplicates in a repeater are not allowed</code> error at one point or another.  For non-primitive items, Angular will add an <code>$$hashKey</code> property to track items.  We can override that with <code>track by</code>.</p>
+
+    <p>Setting our own <code>track by</code> provides a huge performance boost.  If we override an item in the array post-hoc, Angular won't recreate the DOM node.  We can update entire arrays virtually instantly.  Compare the response time of the two examples below:</p>
+  </div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="text-center">
+        <button ng-click="P3.flip(false)">Switch the untracked datums!</button>
+      </div>
+      <div class="left">
+        <div ng-repeat="person in P3.people">
+          {{ :: person.id }} |
+          {{ :: person.name }} |
+          {{ :: person.email }} |
+          {{ :: person.activity }}
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="text-center">
+        <button ng-click="P3.flip(true)">Switch the tracked datums!</button>
+      </div>
+      <div class="right">
+        <div ng-repeat="person in P3.trackedPeople track by person.id">
+          {{ :: person.id }} |
+          {{ :: person.name }} |
+          {{ :: person.email }} |
+          {{ :: person.activity }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

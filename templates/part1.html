@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Use bind once to reduce watchers</h2>
+    <opts-nav></opts-nav>
+    <h3 class="text-center"><a href="https://docs.angularjs.org/guide/expression#one-time-binding">(docs)</a></h3>
+    <p>Angular apps start to feel sluggish at ~2,000 watchers (and they're created everywhere!)  Use the BindOnce syntax (<code>{&#8203;{ :: myValue }}</code>) with data that won't be changing.</p>
+
+    <p>Programmatically, we can achieve the same thing with our $watch statements by using the function that's returned:</p>
+
+    <pre>// Equivalent to {&#8203;{ :: rolex }}
+var unwatch = $scope.$watch('rolex', function (n) {
+  if (n) {
+    unwatch();
+  }
+});</pre>
+
+    <p>A big hotspot to find bindOnce opportunities is ng-repeat.  It's easy to generate hundreds of watchers from a single repeat that don't update beyond their initial value.</p>
+
+    <div class="text-center">
+      <small>NOTE: You'll need Angular 1.3+ to use bindOnce</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center">
+        <h3>{{ P1.boundOnce ? 'With' : 'Without'}} BindOnce</h3>
+        <div>{{ P1.showWatchers }}</div>
+        <button ng-click="P1.boundOnce = !P1.boundOnce">Toggle</button>
+      </div><br>
+      <pre ng-if="!P1.boundOnce">&lt;div ng-repeat="person in P1.people">
+  {&#8203;{ person.id }} |
+  {&#8203;{ person.name }} |
+  {&#8203;{ person.email }} |
+  {&#8203;{ person.activity }}
+&lt;/div></pre>
+      <pre ng-if="P1.boundOnce">&lt;div ng-repeat="person in P1.people">
+  {&#8203;{ :: person.id }} |
+  {&#8203;{ :: person.name }} |
+  {&#8203;{ :: person.email }} |
+  {&#8203;{ :: person.activity }}
+&lt;/div></pre>
+      <div ng-if="!P1.boundOnce">
+        <div ng-repeat="person in P1.people">
+          {{ person.id }} |
+          {{ person.name }} |
+          {{ person.email }} |
+          {{ person.activity }}
+        </div>
+      </div>
+      <div ng-if="P1.boundOnce">
+        <div ng-repeat="person in P1.people">
+          {{ :: person.id }} |
+          {{ :: person.name }} |
+          {{ :: person.email }} |
+          {{ :: person.activity }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
