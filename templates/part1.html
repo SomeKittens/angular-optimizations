@@ -24,7 +24,8 @@ var unwatch = $scope.$watch('rolex', function (n) {
     <div class="col-xs-12">
       <div class="text-center">
         <h3>{{ P1.boundOnce ? 'With' : 'Without'}} BindOnce</h3>
-        <div>{{ P1.showWatchers }}</div>
+        <div>Watchers: {{ P1.showWatchers }}</div>
+        <!-- TODO: <div>Digest length: {{ P1.digestLength }}</div> -->
         <button ng-click="P1.boundOnce = !P1.boundOnce">Toggle</button>
       </div><br>
       <pre ng-if="!P1.boundOnce">&lt;div ng-repeat="person in P1.people">

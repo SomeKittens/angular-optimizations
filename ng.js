@@ -1,17 +1,19 @@
 // Allows us to tell how many cycles have been run since we last reset
 var scopeWatcher = (function () {
   var cyclesRun = 0;
+  var digestLengths = [];
   return {
     instrument: function ($delegate) {
       // Modified from:
       // https://github.com/angular/angular-hint/blob/master/src/modules/scopes.js#L134
       var scopePrototype = ('getPrototypeOf' in Object) ?
         Object.getPrototypeOf($delegate) : $delegate.__proto__;
-        var _digest = scopePrototype.$digest;
+      var _digest = scopePrototype.$digest;
       scopePrototype.$digest = function (fn) {
         cyclesRun++;
+        var start = performance.now();
         var ret = _digest.apply(this, arguments);
-
+        digestLengths.unshift(performance.now() - start);
         return ret;
       };
       return $delegate;
@@ -22,6 +24,9 @@ var scopeWatcher = (function () {
     // Siiiiiigh
     get: function () {
       return cyclesRun;
+    },
+    lastDigest: function () {
+      return digestLengths[0];
     }
   };
 })();
@@ -53,9 +58,8 @@ angular.module('OptimizationsVisualized', ['ui.router'])
   }
   $urlRouterProvider.otherwise('/0');
 })
-// .controller('HomeController', function () {})
-// .controller('EndController', function () {})
-.controller('Part1Controller', function ($scope, $timeout, generateDatums, checkWatchers) {
+.controller('Part1Controller',
+  function ($scope, $timeout, $window, generateDatums, checkWatchers) {
   // Bind Once
   var P1 = this;
   // TODO: Show length of digest cycle
@@ -70,9 +74,9 @@ angular.module('OptimizationsVisualized', ['ui.router'])
     // We need to run checkWatchers *after*
     // the current digest cycle to get the latest data
     $timeout(function () {
-      var ret = checkWatchers('body');
-      console.log(ret);
-      P1.showWatchers = ret;
+      P1.showWatchers = checkWatchers('body');
+      // Broken for now
+      // P1.digestLength = $window.scopeWatcher.lastDigest();
     });
   });
 })
